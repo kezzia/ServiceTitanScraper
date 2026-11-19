@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      width: 440px;
+      padding: 12px;
+      margin: 0;
+    }
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    h3 {
+      font-size: 14px;
+      margin: 0;
+      color: #333;
+    }
+    #reload-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #666;
+    }
+    #reload-btn:hover {
+      background-color: #f0f0f0;
+      color: #007bff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      font-size: 12px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      vertical-align: middle;
+    }
+    th {
+      background-color: #f4f4f4;
+      color: #333;
+      text-align: left;
+    }
+    td.content-cell {
+      white-space: pre-wrap;
+    }
+    td.action-cell {
+      text-align: center;
+    }
+    button.action-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      font-size: 11px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button.action-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-container">
+    <h3>Job Details Row</h3>
+    <button id="reload-btn" title="Reload Data">🔄 Refresh</button>
+  </div>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Job Number</th>
+        <th>Name</th>
+        <th>Job Customer</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="content-cell" id="date">Loading...</td>
+        <td class="content-cell" id="job-number">Loading...</td>
+        <td class="content-cell" id="tech-name"></td>
+        <td class="content-cell" id="job-customer">Loading...</td>
+        <td class="action-cell">
+          <button class="action-button" id="copy-row-btn">Copy Row</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script src="popup.js"></script>
+</body>
+</html>
