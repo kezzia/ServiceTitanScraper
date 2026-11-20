@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show temporary loading state
     document.getElementById('date').textContent = 'Loading...';
     document.getElementById('job-number').textContent = 'Loading...';
-    document.getElementById('tech-name').textContent = '';
+    document.getElementById('tech-name').textContent = 'Loading...';
     document.getElementById('job-customer').textContent = 'Loading...';
     
     loadJobData();
@@ -34,7 +34,7 @@ async function loadJobData() {
 
       jobDateEl.textContent = data.date;
       jobNumberEl.textContent = data.jobNumber || 'Not found';
-      techNameEl.textContent = data.techName || ''; 
+      techNameEl.textContent = data.techName || 'Not found'; 
       jobCustomerEl.textContent = data.jobCustomer || 'Not found';
 
       // Set up the copy entire row button (remove old listeners by cloning or direct reference)
@@ -76,9 +76,6 @@ async function loadJobData() {
 
 // This function runs inside the context of the web page
 function extractPageData() {
-  console.log("Hello world!");
-  debugger;
-
   const pageText = document.body.innerText;
 
   const invoiceHeaderMatch = pageText.match(/Invoice\s*#\s*(\d{8})/i);
@@ -87,8 +84,18 @@ function extractPageData() {
 
   const date = new Date().toLocaleDateString();
 
-  const techMatch = pageText.match(/Sold\s*By\s+([A-Za-z\s]+)(?:\r?\n|$)/i);
-  const techName = techMatch ? techMatch[1].trim() : '';
+  const techNames = document.querySelector('.Stack.qa-appointments-technicians-list').innerText
+    .replaceAll('Working', '')
+    .replaceAll('Working on another job', '')
+    .replaceAll('Dispatched', '')
+    .replaceAll('Dispatched to another job', '')
+    .replaceAll('Dispatched to another job', '')
+    .replaceAll('Assigned', '')
+    .replaceAll('Done', '')
+    .replaceAll(/[^\x20-\x7E]/gmi, "")
+    .trim();
+  // TODO: Convert techs full names into names used in sheets
+  // TODO: If there are multiple techs separate their names into individual chips
 
   let jobCustomer = 'Not found';
   
@@ -115,12 +122,10 @@ function extractPageData() {
     }
   }
 
-
-
   return {
     date: date,
     jobNumber: jobNumber,
-    techName: techName,
+    techName: techNames,
     jobCustomer: jobCustomer
   };
 }
