@@ -76,6 +76,23 @@ async function loadJobData() {
 
 // This function runs inside the context of the web page
 function extractPageData() {
+  function extractSheetsFriendlyTechNames(techNamesNodeList) {
+    let techNames = new Array();
+    const techNamesMap = new Map();
+    techNamesMap.set('Bladimir Paniagua', 'Blad');
+    techNamesMap.set('Chris Bautista', 'Chris');
+    techNamesMap.set('Jonatan Bautista', 'Jon');
+    techNamesMap.set('Mo Tau', 'Mo');
+
+    techNamesNodeList.forEach((node) => {
+      let name = node.innerText.trim();
+      if (techNamesMap.has(name)) {
+        techNames.push(techNamesMap.get(name));
+      }
+    });
+    return techNames.toString();
+  }
+
   const pageText = document.body.innerText;
 
   const invoiceHeaderMatch = pageText.match(/Invoice\s*#\s*(\d{8})/i);
@@ -84,20 +101,10 @@ function extractPageData() {
 
   const date = new Date().toLocaleDateString();
 
-  const techNames = document.querySelector('.Stack.qa-appointments-technicians-list').innerText
-    .replaceAll('Working', '')
-    .replaceAll('Working on another job', '')
-    .replaceAll('Dispatched', '')
-    .replaceAll('Dispatched to another job', '')
-    .replaceAll('Dispatched to another job', '')
-    .replaceAll('Assigned', '')
-    .replaceAll('Done', '')
-    .replaceAll(/[^\x20-\x7E]/gmi, "")
-    .trim();
-  // TODO: Convert techs full names into names used in sheets
-  // TODO: If there are multiple techs separate their names into individual chips
-
   let jobCustomer = 'Not found';
+
+  const techNamesList = document.querySelectorAll('.BodyText.cursor-pointer.appointment-card-technician-name__jmGHe.BodyText--small');
+  const techNames = extractSheetsFriendlyTechNames(techNamesList);
   
   const billToHeader = Array.from(document.querySelectorAll('td, th, div, span')).find(el => el.textContent.trim() === 'JOB CUSTOMER');
   if (billToHeader) {
