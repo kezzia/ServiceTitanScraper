@@ -74,8 +74,11 @@ async function loadJobData() {
   });
 }
 
-// This function runs inside the context of the web page
+// Extracts data from go.servicetitan.com/#/Job/Index/* pages
 function extractPageData() {
+  
+  // Converts formal tech names used in ServiceTitan to format that can be pasted 
+  // in Sheets.
   function extractSheetsFriendlyTechNames(techNamesNodeList) {
     let techNames = new Array();
     const techNamesMap = new Map();
